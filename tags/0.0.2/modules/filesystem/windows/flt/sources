@@ -1,0 +1,13 @@
+TARGETNAME=d14flt
+TARGETTYPE=DRIVER
+DRIVERTYPE=FS
+LINKER_FLAGS=/map
+
+TARGETLIBS= $(TARGETLIBS) $(IFSKIT_LIB_PATH)\fltMgr.lib
+
+INCLUDES=..\include;..\..\include
+
+C_DEFINES=$(C_DEFINES) -D_WIN2K_COMPAT_SLIST_USAGE
+
+SOURCES=callback.c comm.c context.c event.c filter.c message.c module.c \
+	d14flt.rc

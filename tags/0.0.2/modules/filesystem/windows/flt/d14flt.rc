@@ -1,0 +1,9 @@
+#include <windows.h>
+#include <ntverp.h>
+
+#define VER_FILETYPE            VFT_DRV
+#define VER_FILESUBTYPE         VFT2_DRV_SYSTEM
+#define VER_FILEDESCRIPTION_STR "Data-14 File System Agent"
+#define VER_INTERNALNAME_STR    "d14flt.sys"
+
+#include "common.ver"

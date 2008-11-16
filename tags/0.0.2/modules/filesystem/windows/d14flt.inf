@@ -1,0 +1,86 @@
+[Version]
+Signature   = "$Windows NT$"
+Class       = "ContinuousBackup"
+ClassGuid   = {71aa14f8-6fad-4622-ad77-92bb9d7e6947}
+Provider    = %Data-14%
+DriverVer   = 03/22/2007,0.0.0.1
+CatalogFile = 
+
+;;
+;; Strings
+;;
+
+[Strings]
+Data-14           = "Data-14"
+D14FltServiceDesc = "Data-14 File System Agent"
+D14FltServiceName = "d14flt"
+
+RegInstancesSubkeyName      = "Instances"
+RegDefaultInstanceValueName = "DefaultInstance"
+RegAltitudeValueName        = "Altitude"
+RegFlagsValueName           = "Flags"
+
+DefaultInstance    = "CDP Instance"
+Instance1.Name     = "CDP Instance"
+Instance1.Altitude = "288882"
+Instance1.Flags    = 1 ; 1 Suppress automatic attachments
+
+;;
+;; Directories and files
+;;
+
+[DestinationDirs]
+DefaultDestDir      = 12               ; Drivers directory (%windir%\system32\drivers)
+D14Flt.DriverFiles  = 12
+D14Flt.UserFiles    = 10,FltMgr        ; Windows directory (%windir%)
+D14Flt.InfFiles     = 17
+
+[D14Flt.DriverFiles]
+d14flt.sys
+
+[D14Flt.UserFiles]
+
+;;
+;; Service
+;;
+
+[D14Flt.InfFiles]
+d14flt.inf
+
+[D14Flt.Service]
+DisplayName    = %D14FltServiceName%
+Description    = %D14FltServiceDesc%
+ServiceBinary  = %12%\d14flt.sys
+ServiceType    = 2 ;    SERVICE_FILE_SYSTEM_DRIVER
+StartType      = 0 ;    SERVICE_BOOT_START
+ErrorControl   = 1 ;    SERVICE_ERROR_NORMAL
+LoadOrderGroup = "FSFilter Continuous Backup"
+AddReg         = D14Flt.Registry
+Dependencies   = FltMgr
+
+;;
+;; Install
+;;
+
+[DefaultInstall]
+OptionDesc = %D14FltServiceDesc%
+CopyFiles = D14Flt.DriverFiles, D14Flt.UserFiles, D14Flt.InfFiles
+
+[DefaultInstall.Services]
+AddService = %D14FltServiceName%,,D14Flt.Service
+
+[D14Flt.Registry]
+HKR,%RegInstancesSubkeyName%,%RegDefaultInstanceValueName%,0x00000000,%DefaultInstance%
+HKR,%RegInstancesSubkeyName%"\"%Instance1.Name%,%RegAltitudeValueName%,0x00000000,%Instance1.Altitude%
+HKR,%RegInstancesSubkeyName%"\"%Instance1.Name%,%RegFlagsValueName%,0x00010001,%Instance1.Flags%
+
+;;
+;; Uninstall
+;;
+
+[DefaultUninstall]
+DelFiles   = D14Flt.DriverFiles, D14Flt.UserFiles, D14Flt.InfFiles
+DelReg     = D14Flt.Registry
+
+[DefaultUninstall.Services]
+DelService = d14flt,0x200 ; SPSVCINST_STOPSERVICE
