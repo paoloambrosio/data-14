@@ -1,0 +1,42 @@
+= Development Environment configuration =
+
+== Sources download ==
+
+=== Command-line Subversion ===
+
+ * Checkout sources from the SVN repository (https://data-14.googlecode.com/svn/trunk/)
+
+=== Eclipse project ===
+
+ * Install CDT, Subclipse and Mylyn
+ * Import a SVN project from the location https://data-14.googlecode.com/svn/ (select the version you want, usually "trunk") as a new C project named "data-14".
+   In the "Select Confiurations" section go to the "Advanced settings..." and configure the "C/C++ Build".
+ * '''TODO'''
+
+
+== Software build ==
+
+=== Linux ===
+
+ * '''TODO'''
+
+ * '''NOTE''': If the kernel module is not able to find redirfs modules version information, just copy Module.symvers from its directory to the filter directory: it will be merged on next compilation.
+
+=== Windows ===
+
+ * To compile the Windows module, download the [http://www.microsoft.com/whdc/DevTools/WDK/WDKpkg.mspx Windows Driver Kit (WDK)] or use a previuos [http://www.microsoft.com/whdc/DevTools/IFSKit/default.mspx Installable File System (IFS) Kit] CD.
+
+ * The dispatcher needs the [http://msdn2.microsoft.com/en-us/windowsserver/bb980924.aspx Windows Platform SDK] that includes the [http://www.microsoft.com/whdc/resources/downloads.mspx Debugging Tools] (so you need to download the [http://www.microsoft.com/whdc/devtools/debugging/symbolpkg.mspx kernel symbols] only). The latest covers [http://www.microsoft.com/downloads/details.aspx?FamilyId=F26B1AA4-741A-433A-9BE5-FA919850BDBF Windows Server 2008].
+
+ * '''TODO'''
+
+== Virtual machine setup ==
+
+=== Linux ===
+
+ * Operating System setup and debugging with [wiki:KVM]
+
+=== Windows ===
+
+ * '''TODO''': Use it with Qemu or other virtualization software (two serial consoles, one for the kernel debugger the other for the console).
+ * '''I still can't understand how to make this work! ''' - Download [http://msdn2.microsoft.com/en-us/embedded/aa731409.aspx Windows XP Embedded] trial edition and build a 120-day Windows installation with no GUI and serial console.

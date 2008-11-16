@@ -1,0 +1,129 @@
+
+== C types ==
+
+IBM has an interesting [http://www.ibm.com/developerworks/library/l-port64.html article] on 64-bit application porting. This table shows the C data size on 32-bit systems (ILP32), [http://msdn2.microsoft.com/en-us/library/s3f49ktz.aspx Windows] 64-bit systems (LLP64) and all other 64-bit systems (LP64):
+
+
+||          ||ILP32|| LP64||LLP64||ILP64||
+||char      ||    8||    8||    8||    8||
+||short     ||   16||   16||   16||   16||
+||int       ||   32||   32||   32||   64||
+||long      ||   32||   64||   32||   64||
+||long long ||   64||   64||   64||   64||
+||pointer   ||   32||   64||   64||   64||
+
+== Compiler fixed-size types ==
+
+XX in { 8, 16, 32, 64 }
+
+|| Compiler                                                     || uXX               || sXX      ||
+|| C99 standard                                                 || uintXX_t          || intXX_t  ||
+|| GCC                                                          || uintXX_t          || intXX_t  ||
+|| [http://msdn2.microsoft.com/en-us/library/s3f49ktz.aspx MSC] || unsigned !__intXX || !__intXX ||
+
+== Kernel types ==
+
+'''Windows basic data types''' (look [http://msdn2.microsoft.com/en-us/library/aa383751(VS.85).aspx here] for a complete list):
+
+|| Windows type                                                               || Windows C-type || Size and sign ||
+|| SHORT                                                                      || short          || s16           ||
+|| USHORT                                                                     || unsigned short || u16           ||
+|| WCHAR                                                                      || unsigned short || u16           ||
+|| LONG                                                                       || int            || s32           ||
+|| ULONG                                                                      || unsigned int   || u32           ||
+|| LARGE_INTEGER                                                              || long long      || s64           ||
+|| [http://msdn2.microsoft.com/en-us/library/aa489502.aspx SID (struct _SID)] || ''variable''   || ''variable''  ||
+
+SID values for a Windows domain are S-1-AUTHORITY-DOMAIN-USER, so always more than 128 bits:
+ * 1 is the SID version
+ * AUTHORITY is the 48-bit top-level authority, actually between 0 and 5
+ * DOMAIN is constituted by three 32-bit sub-authorities, so it is 96-bit long
+ * USER is a 32-bit sub-authority identifying the domain user
+
+Structures up to version 6.0 (Vista) has the following limits:
+ * SID: 320B
+ * ACL: 64KB
+
+'''Linux basic data types on 64-bit architecture''':
+
+|| Linux type       || Linux C-type            || Size and sign ||
+|| !__kernel_ino_t  || unsigned long           || u64           ||
+|| !__kernel_dev_t  || !__u32                  || u32           ||
+|| !__kernel_mode_t || unsigned int            || u32           ||
+|| !__kernel_uid_t  || unsigned int            || u32           ||
+|| !__kernel_gid_t  || unsigned int            || u32           ||
+|| !__kernel_loff_t || long long               || s64           ||
+|| !__kernel_size_t || unsigned long           || u64           ||
+|| !__kernel_time_t || long                    || s64           ||
+|| struct timespec  || !__kernel_time_t + long || s64+s64       ||
+
+'''Linux basic data types on 32-bit architecture''':
+
+|| Linux type       || Linux C-type            || Size and sign ||
+|| !__kernel_ino_t  || unsigned long           || u32           ||
+|| !__kernel_dev_t  || !__u32                  || u32           ||
+|| !__kernel_mode_t || unsigned short          || u16           ||
+|| !__kernel_uid_t  || unsigned short          || u16           ||
+|| !__kernel_gid_t  || unsigned short          || u16           ||
+|| !__kernel_loff_t || long long               || s64           ||
+|| !__kernel_size_t || unsigned int            || u32           ||
+|| !__kernel_time_t || long                    || s32           ||
+|| struct timespec  || !__kernel_time_t + long || s32+s32       ||
+
+'''Time format comparison''':
+
+|| Platform      || Data type        || Size    || Max years       || Start year || Max year         || Min year         || Granularity     ||
+|| NT            || LARGE_INTEGER    || s64     || 29,247          || 1,601      || 30,848           || -27,646          || 100ns (10^-7^s) ||
+|| 32-bit UNIX   || !__kernel_time_t || s32     || 68              || 1,970      || 2,038            || 1,902            || 1s              ||
+|| 32-bit UNIX   || struct timespec  || s32+s32 || 68              || 1,970      || 2,038            || 1,902            || 1ns (10^-9^s)   ||
+|| 64-bit UNIX   || !__kernel_time_t || s64     || 292,471,208,677 || 1,970      || 292,471,210,647  || -292,471,206,707 || 1s              ||
+|| 64-bit UNIX   || struct timespec  || s64+s64 || 292,471,208,677 || 1,970      || 292,471,210,647  || -292,471,206,707 || 1ns (10^-9^s)   ||
+|| ns since 1970 || int64_t          || s64     || 299             || 1,970      || 2,261            || 1,678            || 1ns (10^-9^s)   ||
+
+== Kernel file system data ==
+
+||                   || Windows type     || Linux type                  || Max bits     ||
+|| Inode id          || LARGE_INTEGER    || !__kernel_ino_t             || 64           ||
+
+|| File type         || 1 bit (file/dir) || 4 bits in !__kernel_mode_t  || 4            ||
+
+|| File attributes   || ULONG            ||                             || u32          ||
+|| Reparse point tag || ULONG            ||                             || u32          ||
+|| Device id         ||                  || !__kernel_dev_t             || u32          ||
+
+|| Creation time     || LARGE_INTEGER    || struct timespec             || s64+s64      ||
+|| Access time       || LARGE_INTEGER    || struct timespec             || s64+s64      ||
+|| Write time        || LARGE_INTEGER    || struct timespec             || s64+s64      ||
+
+|| Size              || LARGE_INTEGER    || !__kernel_loff_t            || s64          ||
+|| Allocation size   || LARGE_INTEGER    ||                             || s64          ||
+
+|| Owner             || SID              || !__kernel_uid_t             || ''variable'' ||
+|| Group             || SID              || !__kernel_gid_t             || ''variable'' ||
+|| DACL              || ACL              || 12 bits in !__kernel_mode_t || ''variable'' ||
+
+NTFS file system imposes a 64-KB limit on the size of the security descriptor that is written to disk for a file (FAT file system does not support security descriptors for files).
+
+== File system limits ==
+
+'''Operating system limits''':
+
+|| OS      || File      || Path        ||
+|| Windows || 255 UCS-2 || 32767 UCS-2 ||
+|| Linux   || 255 bytes || 4095 bytes  ||
+|| FreeBSD || 255 bytes || 1024 bytes  ||
+
+'''Internal file system limits''' (from [http://en.wikipedia.org/wiki/Comparison_of_file_systems Wikipedia]):
+
+|| FS                                                       || File name        || Path name          || File size ||
+|| [http://en.wikipedia.org/wiki/FAT32 FAT32]               || 510 UTF-16 bytes ||                    || 2^32^     ||
+|| [http://en.wikipedia.org/wiki/NTFS NTFS]                 || 510 UTF-16 bytes || 65534 UTF-16 bytes || 2^64^     ||
+|| [http://en.wikipedia.org/wiki/HFS_Plus HFS+]             || 510 UTF-16 bytes ||                    || 2^64^     ||
+|| [http://en.wikipedia.org/wiki/Ext2 ext2]                 || 255 bytes        ||                    || 2^41^     ||
+|| [http://en.wikipedia.org/wiki/Ext3 ext3]                 || 255 bytes        ||                    || 2^41^     ||
+|| [http://en.wikipedia.org/wiki/Ext4 ext4]                 || 255 bytes        ||                    || 2^41^     ||
+|| [http://en.wikipedia.org/wiki/ReiserFS ReiserFS]         || 4096 bytes       ||                    || 2^43^     ||
+|| [http://en.wikipedia.org/wiki/XFS XFS]                   || 255 bytes        ||                    || 2^63^     ||
+|| [http://en.wikipedia.org/wiki/JFS_%28file_system%29 JFS] || 255 bytes        ||                    || 2^52^     ||
+|| [http://en.wikipedia.org/wiki/ZFS ZFS]                   || 255 bytes        ||                    || 2^64^     ||
+

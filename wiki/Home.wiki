@@ -1,0 +1,17 @@
+= Data-14 Backup Development =
+
+'''This project is dead. It was published with the hope that it could be useful to someone.'''
+
+ * Basics
+   * [wiki:Compile Download and compile]
+   * [wiki:Usage Basic Linux usage]
+ * [wiki:Architecture]
+   * [wiki:Dispatcher]
+   * [wiki:FilesystemModule Filesystem module]
+   * [wiki:Database Local database storage]
+ * Development
+   * [wiki:Source Source tree]
+   * [wiki:Notes]
+ * [wiki:FAQ]
+
+Thanks to Frantisek Hrbata for developing the [http://www.redirfs.org/ RedirFS] module, on which the Linux file system filter is based.

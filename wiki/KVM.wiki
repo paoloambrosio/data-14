@@ -1,0 +1,182 @@
+= KVM =
+
+== Example Ubuntu guest installation ==
+
+Create a disk image file:
+{{{
+$ qemu-img create -f qcow2 ubuntu32-804.img 1G
+}}}
+
+Install Ubuntu 8.04 with:
+{{{
+$ kvm -hda ubuntu32-804.img -cdrom ubuntu-8.04-server-i386.iso -no-acpi -boot d -no-kvm
+}}}
+
+The host name is ubuntu32-804 and the unprivileged user name is "user" with password "user". There is only one primary partition (no swap file) labeled "root" on the disk.
+
+Boot the installed system with:
+{{{
+$ kvm -hda ubuntu32-804.img
+}}}
+
+Upgrade to the last packages version. In the guest os enable the serial console login: "cd /etc/event.d; sed s/tty1/ttyS0/ <tty1 >ttyS0". Install smbfs to mount smb host shares.
+{{{
+# for x in wpa-ifupdown alsa-utils pcmciautils pppd-dns rsync; do update-rc.d -f $x remove; done
+# mkdir /mnt/smbserver
+}}}
+
+To share folders between host and guest os, install "samba" package and choose ONE of the following:
+ 1. add {{{-smb ~/vm/smb}}} to kvm invocation and remove default samba server startup (conflicts with qemu) with {{{# update-rc.d -f samba remove}}}
+ 1. create a share in /etc/samba/smb.conf:
+{{{
+----- add to /etc/samba/smb.conf ------
+[vm]
+comment = Common shares for all virtual machines
+writeable = no
+locking = no
+path = /home/blues/vm/smb
+public = yes
+guest ok = yes
+guest only = yes
+hosts allow = 10.0.0.0/255.0.0.0
+------ end ------
+}}}
+
+Then mount the share from the guest system (where smbserver is 10.0.2.4 or 10.0.2.2 respectively - add a line to /etc/hosts) with ONE of:
+ 1. {{{# mount -t smbfs -o username=guest,password= //smbserver/vm /mnt/smbserver}}}
+ 2. Modify /etc/fstab:
+{{{
+----- add to /etc/fstab ------
+//smbserver/vm /mnt/smbserver smbfs guest,noauto 0 0
+------ end ------
+}}}
+
+To easy disk image mainteinance:
+{{{
+# cp /etc/fstab /etc/fstab.orig && sed "s/^UUID=.*\/\s/LABEL=root\ \//" /etc/fstab.orig >/etc/fstab
+}}}
+
+Modify /boot/grub/menu.lst:
+{{{
+----- modify in /boot/grub/menu.lst ------
+kopt=root=LABEL=root ro console=ttyS0 console=tty0
+------ end ------
+}}}
+
+Halt the operating system.
+
+== Prepare host for debugging ==
+
+Install debugging kernel and headers, and the gdb or ddd packages:
+{{{
+# apt-get install linux-image-debug-{kernel version}-server linux-headers-{kernel version}-server modutils gdb
+}}}
+
+  '''NOTE''': on 32 bit os you must use a recent gdb (6.6.50 works) due to address sign problems
+
+== Prepare guest for debugging ==
+
+Create a working disk, keeping the base installation safe.
+{{{
+$ qemu-img create -b ubuntu32-804.img -f qcow2 ubuntu32-804-work.img
+}}}
+
+Run the vm headless (it's optional, but if all is right you won't need the graphics) with serial redirected on the terminal.
+{{{
+$ kvm --nographic -hda ubuntu32-804-work.img
+}}}
+
+Wait for the login prompt (you won't see the grub prompt). Switch between guest console and kvm monitor is done by the key sequence "ctrl-a + c". From the monitor type {{{"savevm booted"}}} to save a vm state. You can now quit the guest os or start debugging.
+
+== Debugging session ==
+
+To load a previous vm state use:
+{{{
+$ kvm -nographic -hda ~/vm/ubuntu/ubuntu32-804-work.img -no-kvm -loadvm booted
+}}}
+
+  '''NOTE''': Looks like it does not work with -snapshot and with kvm kernel support
+
+  '''NOTE''': To debug a vm using gdb, start the virtual machine with the "-s" flag (does not work with the "-loadvm name" but seems to work with "loadvm name" from the monitor) or type "gdbserver" from the monitor.
+
+Go to the kernel headers directory so gdb can find them (needed?) and connect gdb running:
+{{{
+$ gdb /boot/vmlinux-dbg-*-server
+[...]
+(gdb) target remote :1234
+}}}
+
+To reload the saved vm state after a system crash, type "loadvm name" at the monitor prompt.
+
+== Redirfs debugging ==
+
+To compile the module for a kernel version different from the current, set the enviroment variable KERN_SRC like this:
+{{{
+$ export KERN_SRC="/usr/src/linux-headers-2.6.20-16-server/"
+}}}
+and then use the flag "-e" to use it in the makefile instead of the one defined in the makefile:
+{{{
+$ make -e
+}}}
+
+Copy the compiled modules in ~/vm/smb
+
+On the guest os run as root:
+{{{
+mount /mnt/smbserver
+insmod /mnt/smbserver/redirfs.ko
+insmod /mnt/smbserver/cdpflt.ko
+cd /tmp/pippo
+cat /proc/modules | grep cdpflt
+}}}
+
+Last command will print the memory location for the two loaded modules like this:
+{{{
+cdpflt 9752 2 - Live 0xc89f4000 (F)
+redirfs 72348 1 cdpflt, Live 0xc8a27000
+}}}
+
+Then start the debugging session on the host system:
+{{{
+$ gdb /boot/vmlinux-dbg-*-server
+[...on the debugger...]
+target remote :1234
+add-symbol-file ~/vm/smb/cdpflt.ko 0xc89f4000
+y
+add-symbol-file ~/vm/smb/redirfs.ko 0xc8a27000
+y
+}}}
+
+== System cleanup when disk image grows too much ==
+
+Create a new disk file:
+{{{
+$ qemu-img create -f qcow2 temp.img 1G
+}}}
+
+Boot the system with:
+{{{
+$ kvm -hda ubuntu32-804.img -hdc temp.img
+}}}
+
+Login as root, create a new primary partition on drive /dev/hdb and type:
+{{{
+# mkreiserfs /dev/sdb1
+# reiserfstune -l root /dev/sdb1
+# mkdir /tmp/newhd && mount /dev/sdb1 /tmp/newhd
+# tar --one-file-system --exclude=/tmp/\* -c -f - / | tar -C /tmp/newhd -x -f -
+# umount /dev/sdb1
+# grub
+grub> root (hd1,0)
+grub> setup (hd1)
+grub> quit
+}}}
+
+Halt the system.
+{{{
+$ mv temp.img ubuntu32-804.img
+}}}
+
+Follow the "Prepare guest for debugging" section.
+
+  '''NOTE''': you need to create the working image again after this operation

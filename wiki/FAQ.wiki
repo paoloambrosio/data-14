@@ -1,0 +1,27 @@
+= Data-14 FAQ =
+
+----
+[[PageOutline(3,,inline)]]
+----
+
+=== Why is it called Data-14? ===
+
+Carbon-14 (^14^C) is a radioactive isotope of carbon used as basis of the radiocarbon dating method to date archaeological, geological, and hydrogeological samples. Data-14 (^14^D) wants to provide a dating method for file versions in a backup repository. CDP solutions produce lots of file versions and it is not easy to find the correct one to restore. By adding automatic indexing and searching capabilities to the repository, it will be easier to find the desired version.
+
+=== What operating systems are supported? ===
+
+Currently I am working on the Linux platform. A Windows version has been developed as well, but it is in an early stage. Even if the architecture has been designed to be platform independent, no work has been done to support other systems (Solaris, MacOS X, FreeBSD, ...).
+
+=== What file system features support is still not planned? ===
+
+ * Multiple data streams
+ * Windows reparse points (symbolic links are reparse points)
+ * Extended attributes
+ * DACL (on Linux they are stored as extended attributes, do it in user space)
+ * Smart sparse file handling (space allocation)
+
+=== Where can I learn more about Linux and Windows kernel development? ===
+
+ * [http://www.oreilly.com/catalog/understandlk/ Understanding the Linux Kernel, Third Edition] by Daniel Bovet and Marco Cesati
+ * [http://lwn.net/Kernel/LDD3/ Linux Device Drivers, Third Edition] by Jonathan Corbet, Alessandro Rubini, and Greg Kroah-Hartman
+ * [http://www.microsoft.com/mspress/books/6710.aspx Microsoft Windows Internals] by Mark E. Russinovich and David A. Solomon

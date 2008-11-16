@@ -1,0 +1,52 @@
+= Repository structure =
+
+{{{
+data-14
+|-- core ................. here should go the main "dispatcher" software
+|-- external ............. external sources used
+|   `-- redirfs .......... external svn tree
+`-- modules
+    `-- filesystem ....... filesystem events generator
+        |-- include ...... structures and definitions common to all platforms
+        `-- <platform> ... sources for the platform (kernel and user space)
+            |-- flt ...... kernel filesystem filter sources
+            |-- include .. structures for user/kernel message passing
+            `-- usr ...... user space daemon
+}}}
+
+= Source tree =
+
+== Include files ==
+
+{{{
+filesystem
+|-- include
+|   `-- fs-plugin.h ...... structures and definitions common to all platforms
+`-- <platform>
+    |-- flt
+    |   |-- d14flt.h ..... main include file for the filesystem filter
+    |   `-- trace.h ...... definitions of trace functions for logging and debug messages
+    |-- include
+    |   `-- comm.h ....... kernel/user communication structures
+    `-- usr
+        `-- d14usr.h ..... main include file for the user daemon
+}}}
+
+== Source files ==
+
+{{{
+filesystem
+`-- <platform>
+    |-- flt
+    |   |-- callback.c .. filter callbacks
+    |   |-- comm.c ...... user space communication
+    |   |-- context.c ... file system objects attached data management
+    |   |-- data.c ...... utility functions for file data changes
+    |   |-- event.c ..... module event handlers (this is where the filter logic is)
+    |   |-- filter.c .... filter intialization
+    |   |-- message.c ... message creation, deletion and queue management
+    |   `-- module.c .... module/driver startup and shutdown functions
+    `-- usr
+        `-- d14usr.c .... user space daemon
+
+}}}

@@ -1,0 +1,57 @@
+= Basic usage =
+
+'''THIS SOFTWARE IS HIGHLY EXPERIMENTAL. IT WORKS AT KERNEL FILE SYSTEM LEVEL, SO YOU SHOULD USE IT IN A VIRTUAL MACHINE. USE AT YOUR OWN RISK! '''
+
+== What does the software do? ==
+
+The kernel filter listens for file system changes and records them. When it is safe (often immediately, but on file writes it occurs when there are no more writers and dirty pages), the filter sends these changes to the user daemon. For now, the user software just displays them on the console. Disappointed? :-)
+
+'''If some writes have been done, the module crashes on unload with kernel 2.6.24 on the testing VM. I'm sorry but I have no time now to fix this.'''
+
+== How can I use it? ==
+
+=== Test Virtual Machine (the easy way) ===
+
+Start the virtual machine with your favourite virtualization software. I suggest you to take a snapshot with VMware before starting it, and to use the "-snapshot" option on KVM. When the system is booted, you can run three commands to start and stop the software:
+
+ * prepare: mounts a filesystem on /tmp/backedup and loads redirfs module
+ * load: loads the filter module and runs the user daemon
+ * unload: kills the user daemon, removes the kernel modules '''and crashes the system''' (sorry, I realized it crashes on kernel 2.6.24 after setting up the VM image)
+
+After issuing the "prepare" and "load" commands, you can run any system command or use three custom commands provided. Please read the "Useful commands for testing" section on this page.
+
+=== Manual startup (the hard way) ===
+
+You need a virtual machine... don't even think about installing it on a real system! Please read  the [wiki:Compile build instructions] for how to build the needed kernel modules and user space daemon.
+
+Once you have the kernel modules and the user space daemon, you can start the process by:
+
+ 1. loading the two modules
+ 1. adding a directory to the filter path (read RedirFS documentation for more informations); this adds recursively "/tmp/backedup":
+{{{
+echo "1:1:/tmp/backedup" >/sys/fs/redirfs/filters/d14flt/paths
+}}}
+ 1. running the user daemon
+
+=== Useful commands for testing ===
+
+The VM comes with three custom commands (that you can also find in the "external/test/" directory of the sources archive):
+
+ * fill <filename> <size>: fills the file with 'r'-chars up to the specified size
+ * truncate <filename> <size>: sets the new file size to the one specified
+ * writeat <filename> <start> <length>: fills the file with length 'w'-chars from the start position
+
+A good way to see what happens when an inode is opened for write and some other process works on the same one is to:
+
+ 1. Run "{{{cat - >>filename}}}" on a console
+ 1. Switch console (or press CTRL-Z)
+ 1. Execute some commands as...
+{{{
+writeat filename 32000 32000
+writeat filename 2752512 2752512
+writeat filename 134217700 28
+}}}
+ 1. Switch back to the previous console (or run "{{{fg}}}")
+ 1. Press CTRL-D to release the last opened writer on the inode
+
+If you use these example commands you will see the bitmap of the modified data blocks.

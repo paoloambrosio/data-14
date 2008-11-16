@@ -1,0 +1,111 @@
+= Changes in Linux VFS operations =
+
+From version 2.6.11 to 2.6.25
+
+== address_space_operations ==
+
+=== 2.6.13 ===
+{{{
++ struct page* (*get_xip_page)(struct address_space *, sector_t, int)
+}}}
+
+=== 2.6.15 ===
+{{{
+- int (*releasepage) (struct page *, int)
++ int (*releasepage) (struct page *, gfp_t)
+}}}
+
+=== 2.6.16 ===
+{{{
++ int (*migratepage) (struct page *, struct page *)
+}}}
+
+=== 2.6.17 ===
+{{{
+- int (*sync_page)(struct page *)
+- void (*invalidatepage) (struct page *, unsigned long)
++ void (*sync_page)(struct page *)
++ void (*invalidatepage) (struct page *, unsigned long)
+}}}
+
+=== 2.6.18 ===
+{{{
+- int (*migratepage) (struct page *, struct page *)
++ int (*migratepage) (struct address_space *, struct page *, struct page *)
+}}}
+
+=== 2.6.20 ===
+{{{
++ int (*launder_page) (struct page *)
+}}}
+
+=== 2.6.24 ===
+{{{
++ int (*write_begin)(struct file *, struct address_space *mapping, loff_t pos, unsigned len, unsigned flags, struct page **pagep, void **fsdata)
++ int (*write_end)(struct file *, struct address_space *mapping, loff_t pos, unsigned len, unsigned copied, struct page *page, void *fsdata)
+}}}
+
+
+== inode_operations ==
+
+=== 2.6.13 ===
+{{{
+- int (*follow_link) (struct dentry *, struct nameidata *)
+- void (*put_link) (struct dentry *, struct nameidata *)
++ void * (*follow_link) (struct dentry *, struct nameidata *)
++ void (*put_link) (struct dentry *, struct nameidata *, void *)
+}}}
+
+=== 2.6.16 ===
+{{{
++ void (*truncate_range)(struct inode *, loff_t, loff_t)
+}}}
+
+=== 2.6.23 ===
+{{{
++ long (*fallocate)(struct inode *inode, int mode, loff_t offset, loff_t len);
+}}}
+
+
+== file_operations ==
+
+=== 2.6.17 ===
+{{{
++ ssize_t (*splice_write)(struct pipe_inode_info *, struct file *, loff_t *, size_t, unsigned int)
++ ssize_t (*splice_read)(struct file *, loff_t *, struct pipe_inode_info *, size_t, unsigned int)
+}}}
+
+=== 2.6.18 ===
+{{{
+- int (*flush) (struct file *)
++ int (*flush) (struct file *, fl_owner_t id)
+}}}
+
+=== 2.6.19 ===
+{{{
+- ssize_t (*aio_read) (struct kiocb *, char __user *, size_t, loff_t)
+- ssize_t (*aio_write) (struct kiocb *, const char __user *, size_t, loff_t)
+- ssize_t (*readv) (struct file *, const struct iovec *, unsigned long, loff_t *)
+- ssize_t (*writev) (struct file *, const struct iovec *, unsigned long, loff_t *)
++ ssize_t (*aio_read) (struct kiocb *, const struct iovec *, unsigned long, loff_t)
++ ssize_t (*aio_write) (struct kiocb *, const struct iovec *, unsigned long, loff_t)
+}}}
+
+=== 2.6.23 ===
+{{{
+- ssize_t (*sendfile) (struct file *, loff_t *, size_t, read_actor_t, void *)
++ int (*setlease)(struct file *, long, struct file_lock **)
+}}}
+
+=== 2.6.25 ===
+{{{
+- int (*fgetattr)(struct file *, struct kstat *)
+- int (*fsetattr)(struct file *, struct iattr *)
+}}}
+
+== dentry_operations ==
+
+=== 2.6.22 ===
+{{{
++ char *(*d_dname)(struct dentry *, char *, int)
+}}}

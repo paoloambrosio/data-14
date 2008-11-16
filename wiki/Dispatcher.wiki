@@ -1,0 +1,18 @@
+= Dispatcher =
+
+~~The basic idea is to develop a wrapper for [http://www.freedesktop.org/wiki/Software/dbus D-Bus] and [http://www.microsoft.com/windowsserver2003/technologies/msmq/default.mspx MSMQ], to use a traditional message queue mechanism on each platform.~~
+
+We need a message passing interface with:
+
+ * Support for sending data streams
+ * Advanced notification and message dequeuing
+
+~~On Linux, a file in /proc (to be memory mapped or read) look like the best solution. On Windows I still have no idea on how to create a virtual file to read from (probably there is no way).~~
+
+Memory mapping cannot be used for network reading (mempry access is random, so we should download all the file before mapping it), so it cannot be used to send file changes. Since the file is always accessed sequentially, we can transmit it through a unix socket (Linux) or a pipe (Windows). For network connections, the network plugin can take care of sending the data through a secure socket. Every authorized process can ask for data streams to the plugin that generated the request. This will open a socket, inform the caller of the socket name and start sending data as soon as it connects.
+
+Some ideas for the messages format:
+
+ * Binary endian-independent structures: hard to use if not in C but fast '''(current)'''
+ * Binary XML: flexible and not as verbose as XML
+ * JSON: flexible, lots of language bindings

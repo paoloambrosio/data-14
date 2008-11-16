@@ -1,0 +1,16 @@
+= Windows File System =
+
+ * [http://www.reactos.org/generated/doxygen/ ReactOS Doxygen] is a great source of information on Windows kernel. We can't use hidden Windows structures or call non-exported functions, but we can learn how the kernel works (ex. looking at !IoCreateStreamFileObject to understand why an IRP_MJ_CLEANUP is fired).
+ * An OSR [http://www.osronline.com/article.cfm?article=280 article] on file system structures debugging.
+
+=== Symbolic Links ===
+
+ * Symbolic Links http://msdn2.microsoft.com/en-us/library/aa365680.aspx
+ * Symbolic Link Effects on File Systems Functions http://msdn2.microsoft.com/en-us/library/aa365682.aspx
+ * Programming Considerations http://msdn2.microsoft.com/en-us/library/aa365460.aspx
+   * Symbolic links are reparse points
+
+=== Softwares ===
+
+ * [http://www.zezula.net/ Ladislav Zezula] wrote two great softwares ([http://www.zezula.net/en/fstools/filespy.html Filespy] and [http://www.zezula.net/en/fstools/filetest.html FileTest]) for filesystem testing
+ * [http://www.microsoft.com/technet/sysinternals/utilities/filemon.mspx Filemon] monitors file operations

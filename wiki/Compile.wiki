@@ -1,0 +1,42 @@
+= Download and compile =
+
+== Download sources ==
+
+You can download the [http://download.data-14.org/data-14-latest-src.tgz latest sources] from the [http://download.data-14.org/ download site] or checkout them from the subversion repository:
+
+{{{
+svn co http://svn.data-14.org/data-14/tags/0.0.2/ data-14
+}}}
+
+== Compile Linux sources ==
+
+  NOTE: You need to have the kernel sources and the GNU build tools (make, gcc, ...).
+
+First you need to compile the RedirFS module and copy its exported symbols table to the Data-14 filter directory:
+
+{{{
+cd external/redirfs
+make
+cd ../..
+cp external/redirfs/Module.symvers modules/filesystem/linux/flt/
+}}}
+
+Then compile the Data-14 filesystem filter:
+
+{{{
+cd modules/filesystem/linux/
+make
+cd ../../..
+}}}
+
+The compiled modules and daemons will be:
+
+ * external/redirfs/redirfs.ko
+ * modules/filesystem/linux/flt/d14flt.ko
+ * modules/filesystem/linux/usr/d14fltd
+
+Now you can take a look at the [wiki:Usage basic usage] page.
+
+== Compile Windows sources ==
+
+You can just run the WDK build command from the windows directory. It compiles, but it is useless.
