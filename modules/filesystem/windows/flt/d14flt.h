@@ -4,7 +4,7 @@
 #include <fltKernel.h>
 #include "trace.h"
 #include "comm.h"
-#include "fs-plugin.h"
+#include "internal.h"
 
 /*
  * Context management

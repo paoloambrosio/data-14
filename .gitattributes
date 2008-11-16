@@ -1,5 +1,8 @@
 * text=auto !eol
-modules/filesystem/include/fs-plugin.h -text
+core/include/message.h -text
+modules/filesystem/db/schema.sql -text
+modules/filesystem/include/internal.h -text
+modules/filesystem/include/plugin.h -text
 modules/filesystem/linux/LICENSE -text
 modules/filesystem/linux/Makefile -text
 modules/filesystem/linux/flt/.svnignore -text
@@ -16,8 +19,10 @@ modules/filesystem/linux/flt/module.c -text
 modules/filesystem/linux/flt/trace.h -text
 modules/filesystem/linux/include/comm.h -text
 modules/filesystem/linux/usr/Makefile -text
+modules/filesystem/linux/usr/convert.c -text
 modules/filesystem/linux/usr/d14usr.c -text
 modules/filesystem/linux/usr/d14usr.h -text
+modules/filesystem/linux/usr/device.c -text
 modules/filesystem/windows/d14flt.inf -text
 modules/filesystem/windows/dirs -text
 modules/filesystem/windows/flt/callback.c -text

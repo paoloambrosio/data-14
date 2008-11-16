@@ -114,7 +114,7 @@ struct d14flt_i_data *d14flt_i_msg_get(struct inode *inode, int create)
 
 	if (!data->msg && create) {
 		data->msg = d14flt_alloc_msg();
-		data->msg->m_head.m_type = EVENT_TYPE_FS_DATA;
+		data->msg->m_head.m_type = MSG_TYPE_FS_DATA;
 		data->msg->m_args_len = offsetof(struct d14flt_msg, m_body.m_data.inline_bitmap) -
 			offsetof(struct d14flt_msg, m_body);
 		data->msg->m_xargs = data->msg->m_body.m_data.inline_bitmap;
@@ -148,6 +148,7 @@ int d14flt_rfs_data_cache_init(void)
 				sizeof(struct d14flt_i_data), 0, SLAB_RECLAIM_ACCOUNT,
 				NULL);
 #endif
+
 	if (!d14flt_i_data_cache)
 		return -ENOMEM;
 

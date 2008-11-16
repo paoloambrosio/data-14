@@ -21,7 +21,7 @@ void d14flt_on_create(struct inode *dir, struct dentry *dentry, const char *oldn
 
 	msg = d14flt_alloc_msg();
 
-	msg->m_head.m_type = EVENT_TYPE_FS_CREATE;
+	msg->m_head.m_type = MSG_TYPE_FS_CREATE;
 	msg->m_body.m_create.m_args.i_ino = dentry->d_inode->i_ino;
 	msg->m_body.m_create.m_args.pi_ino = dir->i_ino;
 	msg->m_body.m_create.m_args.i_rdev = dentry->d_inode->i_rdev;
@@ -59,7 +59,7 @@ void d14flt_on_link(struct inode *dir, struct dentry *dentry)
 
 	msg = d14flt_alloc_msg();
 
-	msg->m_head.m_type = EVENT_TYPE_FS_LINK;
+	msg->m_head.m_type = MSG_TYPE_FS_LINK;
 	msg->m_body.m_link.m_args.i_ino = dentry->d_inode->i_ino;
 	msg->m_body.m_link.m_args.pi_ino = dir->i_ino;
 	msg->m_args_len = offsetof(struct d14flt_msg, m_body.m_link.inline_name) -
@@ -90,7 +90,7 @@ void d14flt_on_rename(struct inode *old_dir, struct dentry *old_dentry,
 
 	msg = d14flt_alloc_msg();
 
-	msg->m_head.m_type = EVENT_TYPE_FS_RENAME;
+	msg->m_head.m_type = MSG_TYPE_FS_RENAME;
 	msg->m_body.m_rename.m_args.old_i_ino = old_dentry->d_inode ? old_dentry->d_inode->i_ino : 0;
 	msg->m_body.m_rename.m_args.old_pi_ino = old_dir->i_ino;
 	msg->m_body.m_rename.m_args.new_i_ino = new_dentry->d_inode ? new_dentry->d_inode->i_ino : 0;
@@ -122,7 +122,7 @@ void d14flt_on_delete(struct inode *dir, struct dentry *dentry)
 
 	msg = d14flt_alloc_msg();
 
-	msg->m_head.m_type = EVENT_TYPE_FS_DELETE;
+	msg->m_head.m_type = MSG_TYPE_FS_DELETE;
 	msg->m_body.m_delete.m_args.i_ino = dentry->d_inode->i_ino;
 	msg->m_body.m_delete.m_args.pi_ino = dir->i_ino;
 	msg->m_args_len = offsetof(struct d14flt_msg, m_body.m_delete.inline_name) -
