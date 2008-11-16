@@ -3,18 +3,18 @@
 
 === General ===
 
- * [wiki:TypeSize Size of OS and filesystem types]
- * [wiki:Software Development environment configuration]
+ * [TypeSize Size of OS and filesystem types]
+ * [Software Development environment configuration]
 
 === Linux ===
 
  * We need to use {{{__kernel_mode_t}}}, etc. because the GNU compiler defines his own data types ({{{mode_t}}} is 64 bits!); this assures consistency between kernel and user space data. Note that {{{__kernel_dev_t}}} is not definied in user space, so we need to define it {{{__u32}}} in an include file.
- * If during MODPOST you see "WARNING: "rfs_<function>" [<path>/d14flt.ko] undefined!", just copy Module.symvers from RedirFS directory to the filter directory. It will be merged with the symbols from the filter automatically.
- * [wiki:VFSOperations Changes in Linux VFS operations] from version 2.6.11
+ * If during MODPOST you see "{{{WARNING: "rfs_<function>" [<path>/d14flt.ko] undefined!}}}", just copy Module.symvers from RedirFS directory to the filter directory. It will be merged with the symbols from the filter automatically.
+ * [VFSOperations Changes in Linux VFS operations] from version 2.6.11
 
 === Windows ===
 
- * Generic [wiki:WindowsFS Windows File System considerations]
+ * Generic [WindowsFS Windows File System considerations]
  * Windows ACLs are fare more complex than just IDs, but the creation event is an atomic event so we can't split it in create and attributes changes.
  * A file opened by id in Windows gets a random name from one of its hard links names.
- * In the FILE_OBJECT structure there is no parent directory !FileIndex information, so we need to open it and get its !FileIndex on create, rename and delete calls.
+ * In the FILE_OBJECT structure there is no parent directory FileIndex information, so we need to open it and get its FileIndex on create, rename and delete calls.

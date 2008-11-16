@@ -1,6 +1,6 @@
 = Architecture =
 
-The system is based on a generic message passing component (called [wiki:Dispatcher dispatcher]) between pluggable modules. This allows the design of specialized components to get a finer backup granularity (as database transactions), restore interfaces, storage methods, etc.
+The system is based on a generic message passing component (called [Dispatcher dispatcher]) between pluggable modules. This allows the design of specialized components to get a finer backup granularity (as database transactions), restore interfaces, storage methods, etc.
 
 There are two actions that a module can do:
 
@@ -9,13 +9,13 @@ There are two actions that a module can do:
 
 When a message is produced and passed to the dispatcher, it is delivered to every module interested in that message type. When all the consumers have finished processing it, it is discarded.
 
-  '''NOTE''' Message data need to be system independent. While for local storage this is not necessary, it is essential for network exchange. Windows uses UCS-2 for NT file names, while in Linux it is defined by the current locale; a Web application for repository exploring needs a unique interpretation for the file names, so we will need to send and store them in UTF-8 (or another Unicode set).
+  *NOTE* Message data need to be system independent. While for local storage this is not necessary, it is essential for network exchange. Windows uses UCS-2 for NT file names, while in Linux it is defined by the current locale; a Web application for repository exploring needs a unique interpretation for the file names, so we will need to send and store them in UTF-8 (or another Unicode set).
 
 The needed modules for the backup system are:
 
- * [wiki:FilesystemModule Filesystem module] - intercepts file changes and sends them to the dispatcher
+ * [FilesystemModule Filesystem module] - intercepts file changes and sends them to the dispatcher
  * Console restore interface - console software to restore file versions
- * [wiki:Database Local database storage] - stores the file changes in a local database (sqlite, postgresql, ...)
+ * [Database Local database storage] - stores the file changes in a local database (sqlite, postgresql, ...)
  * Remote server storage - remote connection to a storage server
 
 Some useful ones:

@@ -1,6 +1,6 @@
 = Windows File System =
 
- * [http://www.reactos.org/generated/doxygen/ ReactOS Doxygen] is a great source of information on Windows kernel. We can't use hidden Windows structures or call non-exported functions, but we can learn how the kernel works (ex. looking at !IoCreateStreamFileObject to understand why an IRP_MJ_CLEANUP is fired).
+ * [http://www.reactos.org/generated/doxygen/ ReactOS Doxygen] is a great source of information on Windows kernel. We can't use hidden Windows structures or call non-exported functions, but we can learn how the kernel works (ex. looking at IoCreateStreamFileObject to understand why an IRP_MJ_CLEANUP is fired).
  * An OSR [http://www.osronline.com/article.cfm?article=280 article] on file system structures debugging.
 
 === Symbolic Links ===

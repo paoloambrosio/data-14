@@ -13,6 +13,6 @@ Memory mapping cannot be used for network reading (mempry access is random, so w
 
 Some ideas for the messages format:
 
- * Binary endian-independent structures: hard to use if not in C but fast '''(current)'''
+ * Binary endian-independent structures: hard to use if not in C but fast *(current)*
  * Binary XML: flexible and not as verbose as XML
  * JSON: flexible, lots of language bindings

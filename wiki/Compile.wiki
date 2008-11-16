@@ -35,7 +35,7 @@ The compiled modules and daemons will be:
  * modules/filesystem/linux/flt/d14flt.ko
  * modules/filesystem/linux/usr/d14fltd
 
-Now you can take a look at the [wiki:Usage basic usage] page.
+Now you can take a look at the [Usage basic usage] page.
 
 == Compile Windows sources ==
 

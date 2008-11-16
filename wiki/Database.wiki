@@ -1,6 +1,6 @@
 = Database storage =
 
-'''At first we can will store the entire backup on the database, but this is just a temporary solution.''' Later we will probably write data on a file and let the database keep just the block informations (hash value, etc.).
+*At first we can will store the entire backup on the database, but this is just a temporary solution.* Later we will probably write data on a file and let the database keep just the block informations (hash value, etc.).
 
 The table where the inode blocks are stored:
 

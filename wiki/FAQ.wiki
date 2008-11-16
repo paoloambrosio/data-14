@@ -1,8 +1,6 @@
 = Data-14 FAQ =
 
-----
-[[PageOutline(3,,inline)]]
-----
+<wiki:toc max_depth="3" />
 
 === Why is it called Data-14? ===
 
@@ -25,3 +23,4 @@ Currently I am working on the Linux platform. A Windows version has been develop
  * [http://www.oreilly.com/catalog/understandlk/ Understanding the Linux Kernel, Third Edition] by Daniel Bovet and Marco Cesati
  * [http://lwn.net/Kernel/LDD3/ Linux Device Drivers, Third Edition] by Jonathan Corbet, Alessandro Rubini, and Greg Kroah-Hartman
  * [http://www.microsoft.com/mspress/books/6710.aspx Microsoft Windows Internals] by Mark E. Russinovich and David A. Solomon
+

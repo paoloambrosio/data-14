@@ -19,7 +19,7 @@ Boot the installed system with:
 $ kvm -hda ubuntu32-804.img
 }}}
 
-Upgrade to the last packages version. In the guest os enable the serial console login: "cd /etc/event.d; sed s/tty1/ttyS0/ <tty1 >ttyS0". Install smbfs to mount smb host shares.
+Upgrade to the last packages version. In the guest os enable the serial console login: "{{{cd /etc/event.d; sed s/tty1/ttyS0/ <tty1 >ttyS0}}}". Install smbfs to mount smb host shares.
 {{{
 # for x in wpa-ifupdown alsa-utils pcmciautils pppd-dns rsync; do update-rc.d -f $x remove; done
 # mkdir /mnt/smbserver
@@ -72,7 +72,7 @@ Install debugging kernel and headers, and the gdb or ddd packages:
 # apt-get install linux-image-debug-{kernel version}-server linux-headers-{kernel version}-server modutils gdb
 }}}
 
-  '''NOTE''': on 32 bit os you must use a recent gdb (6.6.50 works) due to address sign problems
+  *NOTE*: on 32 bit os you must use a recent gdb (6.6.50 works) due to address sign problems
 
 == Prepare guest for debugging ==
 
@@ -95,9 +95,9 @@ To load a previous vm state use:
 $ kvm -nographic -hda ~/vm/ubuntu/ubuntu32-804-work.img -no-kvm -loadvm booted
 }}}
 
-  '''NOTE''': Looks like it does not work with -snapshot and with kvm kernel support
+  *NOTE*: Looks like it does not work with -snapshot and with kvm kernel support
 
-  '''NOTE''': To debug a vm using gdb, start the virtual machine with the "-s" flag (does not work with the "-loadvm name" but seems to work with "loadvm name" from the monitor) or type "gdbserver" from the monitor.
+  *NOTE*: To debug a vm using gdb, start the virtual machine with the "-s" flag (does not work with the "-loadvm name" but seems to work with "loadvm name" from the monitor) or type "gdbserver" from the monitor.
 
 Go to the kernel headers directory so gdb can find them (needed?) and connect gdb running:
 {{{
@@ -179,4 +179,4 @@ $ mv temp.img ubuntu32-804.img
 
 Follow the "Prepare guest for debugging" section.
 
-  '''NOTE''': you need to create the working image again after this operation
+  *NOTE*: you need to create the working image again after this operation

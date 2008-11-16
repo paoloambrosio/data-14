@@ -6,7 +6,7 @@ The filesystem module is made of two parts: a kernel-space module that intercept
 
 The general structure in both platforms is alike. Global functions exported by every source file have similar names and function; this helps separating the logic from the implementation. This is the architectural diagram with interactions between files:
 
-[[Image(arch_filter.png)]]
+[http://data-14.googlecode.com/files/wiki_arch_filter.png]
 
  * Module - kernel module/driver load/unload routines
  * Filter - registers/unregisters the filesystem filter with the filter manager (RedirFS in Linux)
