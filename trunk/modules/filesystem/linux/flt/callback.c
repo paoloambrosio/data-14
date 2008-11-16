@@ -68,7 +68,7 @@ enum rfs_retv d14flt_i_setattr(rfs_context context, struct rfs_args *args)
 	if (args->args.i_setattr.iattr->ia_valid & (ATTR_MODE | ATTR_UID | ATTR_GID)) {
 		msg = d14flt_alloc_msg();
 
-		msg->m_head.m_type = EVENT_TYPE_FS_ATTR;
+		msg->m_head.m_type = MSG_TYPE_FS_ATTR;
 		msg->m_body.m_attr.m_args.i_ino
 				= args->args.i_setattr.dentry->d_inode->i_ino;
 		msg->m_body.m_attr.m_args.i_mode

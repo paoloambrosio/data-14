@@ -6,7 +6,6 @@
 #include <linux/version.h>
 #include <asm/semaphore.h>
 #include "redirfs.h"
-#include "fs-plugin.h"
 #include "comm.h"
 #include "trace.h"
 

@@ -94,6 +94,7 @@ int d14flt_msg_init(void)
 			sizeof(struct d14flt_msg), 0,
 			SLAB_RECLAIM_ACCOUNT, NULL);
 #endif
+
 	if (!d14flt_msg_cache)
 		return -ENOMEM;
 

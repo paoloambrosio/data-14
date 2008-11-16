@@ -12,7 +12,7 @@
 
 const struct d14flt_cmd d14flt_cmd_connect = {
 		.cmd = D14FLT_DEV_CONNECT,
-		.args.connect.magic = D14FLT_DEV_MAGIC,
+		.args.connect.magic = D14FLT_MAGIC,
 		.args.connect.version = D14FLT_DEV_VERSION,
 };
 

@@ -5,7 +5,7 @@
 #include <windows.h>
 #include <fltUser.h>
 #include "comm.h"
-#include "fs-plugin.h"
+#include "plugin.h"
 
 typedef struct _FILTER_MESSAGE {
     FILTER_MESSAGE_HEADER FilterMessageHeader;
