@@ -1,26 +1,4 @@
 * text=auto !eol
-external/redirfs/.svnignore -text
-external/redirfs/CHANGELOG -text
-external/redirfs/COPYING -text
-external/redirfs/INSTALL -text
-external/redirfs/Makefile -text
-external/redirfs/README -text
-external/redirfs/TODO -text
-external/redirfs/redirfs.h -text
-external/redirfs/rfs.c -text
-external/redirfs/rfs.h -text
-external/redirfs/rfs_chain.c -text
-external/redirfs/rfs_data.c -text
-external/redirfs/rfs_dcache.c -text
-external/redirfs/rfs_dentry.c -text
-external/redirfs/rfs_file.c -text
-external/redirfs/rfs_flt.c -text
-external/redirfs/rfs_info.c -text
-external/redirfs/rfs_inode.c -text
-external/redirfs/rfs_ops.c -text
-external/redirfs/rfs_path.c -text
-external/redirfs/rfs_root.c -text
-external/redirfs/rfs_sysfs.c -text
 modules/filesystem/include/fs-plugin.h -text
 modules/filesystem/linux/LICENSE -text
 modules/filesystem/linux/Makefile -text

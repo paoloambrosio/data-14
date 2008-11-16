@@ -1,0 +1,8 @@
+[submodule "external/redirfs"]
+	path = external/redirfs
+	owner = /
+	url = http://www.redirfs.org/svn/redirfs/branches/0.2.1/src/redirfs
+	branch = /
+	fetch = :refs/remotes/git-svn
+	remote = svn
+	type = dir
