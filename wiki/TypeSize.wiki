@@ -1,4 +1,3 @@
-
 == C types ==
 
 IBM has an interesting [http://www.ibm.com/developerworks/library/l-port64.html article] on 64-bit application porting. This table shows the C data size on 32-bit systems (ILP32), [http://msdn2.microsoft.com/en-us/library/s3f49ktz.aspx Windows] 64-bit systems (LLP64) and all other 64-bit systems (LP64):
@@ -103,10 +102,12 @@ NTFS file system imposes a 64-KB limit on the size of the security descriptor th
 
 *Operating system limits*:
 
-||{{{ OS      }}}||{{{ File      }}}||{{{ Path        }}}||
-||{{{ Windows }}}||{{{ 255 UCS-2 }}}||{{{ 32767 UCS-2 }}}||
-||{{{ Linux   }}}||{{{ 255 bytes }}}||{{{ 4095 bytes  }}}||
-||{{{ FreeBSD }}}||{{{ 255 bytes }}}||{{{ 1024 bytes  }}}||
+||{{{ OS      }}}||{{{ File       }}}||{{{ Path         }}}||
+||{{{ Windows }}}||{{{ 255 UTF-16 }}}||{{{ 32767 UTF-16 }}}||
+||{{{ Linux   }}}||{{{ 255 bytes  }}}||{{{ 4095 bytes   }}}||
+||{{{ FreeBSD }}}||{{{ 255 bytes  }}}||{{{ 1024 bytes   }}}||
+
+Note: Windows started using UTF-16 over UCS-2 with Windows 2000 (http://en.wikipedia.org/wiki/UTF-16/UCS-2)
 
 *Internal file system limits* (from [http://en.wikipedia.org/wiki/Comparison_of_file_systems Wikipedia]):
 
@@ -121,4 +122,3 @@ NTFS file system imposes a 64-KB limit on the size of the security descriptor th
 ||{{{ [http://en.wikipedia.org/wiki/XFS XFS]                   }}}||{{{ 255 bytes        }}}||{{{                    }}}||{{{ 2^63^     }}}||
 ||{{{ [http://en.wikipedia.org/wiki/JFS_%28file_system%29 JFS] }}}||{{{ 255 bytes        }}}||{{{                    }}}||{{{ 2^52^     }}}||
 ||{{{ [http://en.wikipedia.org/wiki/ZFS ZFS]                   }}}||{{{ 255 bytes        }}}||{{{                    }}}||{{{ 2^64^     }}}||
-
