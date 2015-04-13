@@ -1,0 +1,213 @@
+
+/* Fonts and generic style */
+
+h1 {
+	color: #D90000;
+	margin-top: 0;
+	padding-top: 0;
+	font-weight: normal;
+	font-size: 2em;
+}
+
+h2 {
+	font-size: 1.4em;
+}
+
+h3 {
+	font-size: 1.05em;
+/*
+	font-weight: normal;
+*/
+	font-weight: bold;
+	font-style: italic;
+}
+
+a {
+	color: #D90000;
+	text-decoration: none;
+}
+
+img {
+	border: none;
+}
+
+/* Layout */
+
+body {
+	background: white;
+	margin: 0;
+	padding: 0;
+	font-size: small;
+	font-family: Verdana, sans-serif;
+	color: #444;
+}
+
+#header {
+	float: left;
+	width: 100%;
+	background: url('../header_bg.png') repeat-x bottom black;
+	padding: 0 0 23px 0;
+}
+
+#logo {
+	float: left;
+	clear: left;
+	padding: 20px 2em 10px;
+}
+
+div.hnav, div.navtab {
+	margin: 0;
+	padding: 0;
+}
+
+#tracnav ul {
+	float: right;
+	clear: right;
+	margin: 0 auto;
+	padding: 20px 2em 10px;
+}
+
+#tracnav ul li {
+	font-size: 80%;
+}
+
+#leftnav ul {
+	float: left;
+	clear: left;
+	margin: 0 auto;
+	padding: 10px 1em 0 2em;
+}
+
+#rightnav ul {
+	float: right;
+	clear: right;
+	margin: 0 auto;
+	padding: 10px 2em 0 1em;
+}
+
+div.hnav li {
+	float: left;
+	list-style: none;
+	padding: 0 0.5em;
+	border-left: 1px solid #666;
+	color: white;
+}
+
+div.hnav li.first {
+	padding-left: 0;
+	border-left: 0;
+}
+
+div.hnav li.last {
+	padding-right: 0;
+	border-right: 0;
+}
+
+div.hnav li a {
+	color: white;
+	font-weight: bold;
+}
+
+div.navtab li {
+	float: left;
+	list-style: none;
+	padding: 0 0 0 2px;
+}
+
+div.navtab li a {
+	float: left;
+	color: white;
+	text-decoration: none;
+	font-weight: bold;
+	padding: 5px 12px 4px 10px;
+}
+
+div.navtab li a:hover {
+	padding-bottom: 2px;
+	border-bottom: 3px solid #D90000;
+}
+
+div.navtab li.active {
+	background: url("../tab-white-l.png") no-repeat left top;
+	border-bottom: 1px solid white;
+}
+
+div.navtab li.active a {
+	color: #444;
+	border-bottom: 1px solid #5C5C5C;
+	background: url("../tab-white-r.png") no-repeat right top;
+}
+
+div.navtab li.active a:hover {
+	padding-bottom: 4px;
+	border-bottom: 1px solid #5C5C5C;
+}
+
+#main {
+	float: left;
+	width: 100%;
+	padding: 0;
+}
+
+#content {
+	padding: 1em 4em;
+}
+
+#footer {
+	float: left;
+	width: 100%;
+	text-align: center;
+	font-size: 0.8em;
+	padding: 40px 0;
+	background: url('../footer_bg.png') repeat-x top;
+}
+
+#ctxtnav {
+	float: right;
+	background: #444 url('../nav-tl.png') no-repeat top left;
+	margin: 1em 2em 2em 2em;
+}
+
+div.nav {
+	padding: 0;
+}
+
+div.nav h2 {
+	color: white;
+	background: #444 url('../nav-tr.png') no-repeat top right;
+	font-size: 1em;
+	font-weight: bold;
+	padding: 5px 12px 5px 7px;
+	margin: 0pt 0pt 0pt 5px;
+	border: none;
+}
+
+
+div.nav ul {
+	padding: 0;
+	margin: 0;
+	background: white;
+	border: 1px solid #444;
+}
+
+div.nav li {
+	margin: 0;
+	padding: 3px 12px;
+	list-style: none;
+	border-bottom: 1px solid #CCC;
+	font-weight: bold;
+}
+
+div.nav li.last {
+	border: none;
+}
+
+div.nav li:hover {
+	background: #EEEEEE;
+}
+
+div.nav hr {
+	display: none;
+	height: 0;
+}
+
